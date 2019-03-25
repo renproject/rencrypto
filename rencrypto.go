@@ -15,18 +15,18 @@ type Encrypter interface {
 	Marshal() ([]byte, error)
 	Hash(hash.Hash) ([]byte, error)
 	Encrypt(msg []byte) ([]byte, error)
-	PubKey() crypto.PublicKey
+	Public() crypto.PublicKey
 }
 
 type Signer interface {
 	Marshal() ([]byte, error)
-	Sign(msgHash [32]byte) ([]byte, error)
+	Sign(msgHash []byte) ([]byte, error)
 	Verifier() Verifier
 }
 
 type Verifier interface {
 	Marshal() ([]byte, error)
 	Hash(hash.Hash) ([]byte, error)
-	Verify(sig []byte, msgHash [32]byte) error
-	PubKey() crypto.PublicKey
+	Verify(sig []byte, msgHash []byte) error
+	Public() crypto.PublicKey
 }

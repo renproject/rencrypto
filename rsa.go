@@ -57,7 +57,7 @@ func (encrypter *rsaEncrypter) Hash(hash hash.Hash) ([]byte, error) {
 	return hash.Sum(data)[len(data):], nil
 }
 
-func (encrypter *rsaEncrypter) PubKey() crypto.PublicKey {
+func (encrypter *rsaEncrypter) Public() crypto.PublicKey {
 	return encrypter.PublicKey
 }
 
@@ -121,10 +121,6 @@ func (decrypter *rsaDecrypter) Encrypter() Encrypter {
 	return &rsaEncrypter{
 		PublicKey: &decrypter.PublicKey,
 	}
-}
-
-func (decrypter *rsaDecrypter) PrivKey() crypto.PrivateKey {
-	return decrypter.PrivateKey
 }
 
 func marshalRSAPrivKey(privateKey *rsa.PrivateKey) ([]byte, error) {

@@ -47,8 +47,8 @@ func NewECDSASigner(key interface{}) (Signer, error) {
 	}, nil
 }
 
-func (signer *ecdsaSigner) Sign(msgHash [32]byte) ([]byte, error) {
-	return ethCrypto.Sign(msgHash[:], signer.privKey)
+func (signer *ecdsaSigner) Sign(msgHash []byte) ([]byte, error) {
+	return ethCrypto.Sign(msgHash, signer.privKey)
 }
 
 func (signer *ecdsaSigner) Marshal() ([]byte, error) {
@@ -57,10 +57,6 @@ func (signer *ecdsaSigner) Marshal() ([]byte, error) {
 
 func (signer *ecdsaSigner) Verifier() Verifier {
 	return &ecdsaVerifier{pubKey: &signer.privKey.PublicKey}
-}
-
-func (signer *ecdsaSigner) PrivKey() crypto.PrivateKey {
-	return signer.privKey
 }
 
 func NewECDSAVerifier(key interface{}) (Verifier, error) {
@@ -104,7 +100,7 @@ func (verifier *ecdsaVerifier) Marshal() ([]byte, error) {
 	return ethCrypto.FromECDSAPub(verifier.pubKey), nil
 }
 
-func (verifier *ecdsaVerifier) Verify(sig []byte, msgHash [32]byte) error {
+func (verifier *ecdsaVerifier) Verify(sig, msgHash []byte) error {
 	return ECDSAVerify(sig, msgHash, func(pubKey *ecdsa.PublicKey) error {
 		pubKeyBytes, err := verifier.Marshal()
 		if err != nil {
@@ -119,7 +115,7 @@ func (verifier *ecdsaVerifier) Verify(sig []byte, msgHash [32]byte) error {
 	})
 }
 
-func (verifier *ecdsaVerifier) PubKey() crypto.PublicKey {
+func (verifier *ecdsaVerifier) Public() crypto.PublicKey {
 	return verifier.pubKey
 }
 
@@ -131,8 +127,8 @@ func (verifier *ecdsaVerifier) Hash(hash hash.Hash) ([]byte, error) {
 	return hash.Sum(data), nil
 }
 
-func ECDSAVerify(sig []byte, msgHash [32]byte, checker func(*ecdsa.PublicKey) error) error {
-	pubKey, err := ethCrypto.SigToPub(msgHash[:], sig)
+func ECDSAVerify(sig, msgHash []byte, checker func(*ecdsa.PublicKey) error) error {
+	pubKey, err := ethCrypto.SigToPub(msgHash, sig)
 	if err != nil {
 		return err
 	}

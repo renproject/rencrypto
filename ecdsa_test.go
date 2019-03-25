@@ -44,10 +44,10 @@ var _ = Describe("ECDSA", func() {
 				Expect(err).Should(BeNil())
 				data, err := verifier.Marshal()
 				Expect(err).Should(BeNil())
-				Expect(verifier.Verify(sig, hash)).Should(BeNil())
+				Expect(verifier.Verify(sig, hash[:])).Should(BeNil())
 				verifier2, err := NewECDSAVerifier(data)
 				Expect(err).Should(BeNil())
-				Expect(verifier2.Verify(sig, hash)).Should(BeNil())
+				Expect(verifier2.Verify(sig, hash[:])).Should(BeNil())
 				return true
 			}, &quick.Config{
 				MaxCount: 8,
@@ -84,14 +84,14 @@ var _ = Describe("ECDSA", func() {
 				rand.Read(hash[:])
 				data, err := signer.Marshal()
 				Expect(err).Should(BeNil())
-				sig, err := signer.Sign(hash)
+				sig, err := signer.Sign(hash[:])
 				Expect(err).Should(BeNil())
 				signer2, err := NewECDSASigner(data)
 				Expect(err).Should(BeNil())
-				sig1, err := signer2.Sign(hash)
+				sig1, err := signer2.Sign(hash[:])
 				Expect(err).Should(BeNil())
-				Expect(signer.Verifier().Verify(sig, hash)).Should(BeNil())
-				Expect(signer.Verifier().Verify(sig1, hash)).Should(BeNil())
+				Expect(signer.Verifier().Verify(sig, hash[:])).Should(BeNil())
+				Expect(signer.Verifier().Verify(sig1, hash[:])).Should(BeNil())
 				return true
 			}, &quick.Config{
 				MaxCount: 8,
