@@ -1,4 +1,4 @@
-package crypto_test
+package rencrypto_test
 
 import (
 	"testing"

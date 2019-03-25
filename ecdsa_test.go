@@ -7,7 +7,7 @@ import (
 
 	. "github.com/onsi/ginkgo"
 	. "github.com/onsi/gomega"
-	. "github.com/renproject/renxcs-go/crypto"
+	. "github.com/renproject/rencrypto"
 
 	"github.com/ethereum/go-ethereum/crypto"
 )
